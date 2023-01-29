@@ -15,6 +15,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
     try{
         const postsCollection = client.db('postifydb').collection('postsCollection')
+        const usersCollection = client.db('postifydb').collection('usersCollection')
         
         //post new activity
         app.post('/newpost', async(req, res) => {
@@ -38,9 +39,11 @@ async function run(){
             res.send(result)
         })
 
-        //my profile page 
-        app.post('/myprofile', async(req, res) => {
-            const prorfilebody
+        //save users to backend
+        app.post('/users', async(req, res) => {
+            const userinfo = req.body;
+            const result = await usersCollection.insertOne(userinfo)
+            res.send(result)
         })
     }
     finally{}
