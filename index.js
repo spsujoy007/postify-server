@@ -40,9 +40,24 @@ async function run(){
         })
 
         //save users to backend
-        app.post('/users', async(req, res) => {
+        app.post('/saveuser', async(req, res) => {
             const userinfo = req.body;
             const result = await usersCollection.insertOne(userinfo)
+            res.send(result)
+        })
+
+        // get all users 
+        app.get('/allusers', async(req, res) => {
+            const query = {};
+            const result = await usersCollection.find(query).toArray()
+            res.send(result)
+        })
+
+        //get my profile page
+        app.get('/myprofile', async(req, res) => {
+            const myemail = req.query.email;
+            const query = {email: myemail};
+            const result = await usersCollection.findOne(query);
             res.send(result)
         })
     }
