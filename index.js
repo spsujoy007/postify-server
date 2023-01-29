@@ -31,6 +31,22 @@ async function run(){
             res.send(result)
         })
 
+        //get only my post
+        app.get('/mypost', async(req, res) => {
+            const email = req.query.email;
+            const query = {email: email}
+            const result = await postsCollection.find(query).toArray()
+            res.send(result)
+        })
+
+        //edit my post 
+        app.patch('/editpost', async(req, res) => {
+            const id = req.query.id;
+            const query = { _id: ObjectId(id)};
+            const result = postsCollection.updateOne(query);
+            res.send(result)
+        })
+
         //to delete post
         app.delete('/mypost', async(req, res) => {
             const id = req.query.id;
@@ -57,6 +73,13 @@ async function run(){
         app.get('/myprofile', async(req, res) => {
             const myemail = req.query.email;
             const query = {email: myemail};
+            const result = await usersCollection.findOne(query);
+            res.send(result)
+        })
+
+        app.get('/profile', async(req,res) => {
+            const email = req.query.email;
+            const query =  {email: email};
             const result = await usersCollection.findOne(query);
             res.send(result)
         })
